@@ -6,57 +6,53 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TodoApi.Models;
-using System.Web.Http.Cors;
-
 
 namespace TodoApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-
-    public class AdminController : ControllerBase
+    public class TemplateController : ControllerBase
     {
         private readonly MyContext _context;
 
-        public AdminController(MyContext context)
+        public TemplateController(MyContext context)
         {
             _context = context;
         }
 
-        // GET: api/Admin
-
+        // GET: api/Template
         [HttpGet]
-        public IEnumerable<Admin> Get()
+        public async Task<ActionResult<IEnumerable<Template>>> GetTemplate()
         {
-            return _context.Admin;
+            return await _context.Template.ToListAsync();
         }
 
-        // GET: api/Admin/5
+        // GET: api/Template/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Admin>> GetAdmin(int id)
+        public async Task<ActionResult<Template>> GetTemplate(int id)
         {
-            var admin = await _context.Admin.FindAsync(id);
+            var template = await _context.Template.FindAsync(id);
 
-            if (admin == null)
+            if (template == null)
             {
                 return NotFound();
             }
 
-            return admin;
+            return template;
         }
 
-        // PUT: api/Admin/5
+        // PUT: api/Template/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAdmin(int id, Admin admin)
+        public async Task<IActionResult> PutTemplate(int id, Template template)
         {
-            if (id != admin.id)
+            if (id != template.id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(admin).State = EntityState.Modified;
+            _context.Entry(template).State = EntityState.Modified;
 
             try
             {
@@ -64,7 +60,7 @@ namespace TodoApi.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!AdminExists(id))
+                if (!TemplateExists(id))
                 {
                     return NotFound();
                 }
@@ -77,37 +73,37 @@ namespace TodoApi.Controllers
             return NoContent();
         }
 
-        // POST: api/Admin
+        // POST: api/Template
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Admin>> PostAdmin(Admin admin)
+        public async Task<ActionResult<Template>> PostTemplate(Template template)
         {
-            _context.Admin.Add(admin);
+            _context.Template.Add(template);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAdmin", new { id = admin.id }, admin);
+            return CreatedAtAction("GetTemplate", new { id = template.id }, template);
         }
 
-        // DELETE: api/Admin/5
+        // DELETE: api/Template/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Admin>> DeleteAdmin(int id)
+        public async Task<ActionResult<Template>> DeleteTemplate(int id)
         {
-            var admin = await _context.Admin.FindAsync(id);
-            if (admin == null)
+            var template = await _context.Template.FindAsync(id);
+            if (template == null)
             {
                 return NotFound();
             }
 
-            _context.Admin.Remove(admin);
+            _context.Template.Remove(template);
             await _context.SaveChangesAsync();
 
-            return admin;
+            return template;
         }
 
-        private bool AdminExists(int id)
+        private bool TemplateExists(int id)
         {
-            return _context.Admin.Any(e => e.id == id);
+            return _context.Template.Any(e => e.id == id);
         }
     }
 }

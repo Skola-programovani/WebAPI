@@ -6,57 +6,53 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TodoApi.Models;
-using System.Web.Http.Cors;
-
 
 namespace TodoApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-
-    public class AdminController : ControllerBase
+    public class TemplatelinkController : ControllerBase
     {
         private readonly MyContext _context;
 
-        public AdminController(MyContext context)
+        public TemplatelinkController(MyContext context)
         {
             _context = context;
         }
 
-        // GET: api/Admin
-
+        // GET: api/Templatelink
         [HttpGet]
-        public IEnumerable<Admin> Get()
+        public async Task<ActionResult<IEnumerable<Templatelink>>> GetTemplatelink()
         {
-            return _context.Admin;
+            return await _context.Templatelink.ToListAsync();
         }
 
-        // GET: api/Admin/5
+        // GET: api/Templatelink/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Admin>> GetAdmin(int id)
+        public async Task<ActionResult<Templatelink>> GetTemplatelink(int id)
         {
-            var admin = await _context.Admin.FindAsync(id);
+            var templatelink = await _context.Templatelink.FindAsync(id);
 
-            if (admin == null)
+            if (templatelink == null)
             {
                 return NotFound();
             }
 
-            return admin;
+            return templatelink;
         }
 
-        // PUT: api/Admin/5
+        // PUT: api/Templatelink/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAdmin(int id, Admin admin)
+        public async Task<IActionResult> PutTemplatelink(int id, Templatelink templatelink)
         {
-            if (id != admin.id)
+            if (id != templatelink.id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(admin).State = EntityState.Modified;
+            _context.Entry(templatelink).State = EntityState.Modified;
 
             try
             {
@@ -64,7 +60,7 @@ namespace TodoApi.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!AdminExists(id))
+                if (!TemplatelinkExists(id))
                 {
                     return NotFound();
                 }
@@ -77,37 +73,37 @@ namespace TodoApi.Controllers
             return NoContent();
         }
 
-        // POST: api/Admin
+        // POST: api/Templatelink
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Admin>> PostAdmin(Admin admin)
+        public async Task<ActionResult<Templatelink>> PostTemplatelink(Templatelink templatelink)
         {
-            _context.Admin.Add(admin);
+            _context.Templatelink.Add(templatelink);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAdmin", new { id = admin.id }, admin);
+            return CreatedAtAction("GetTemplatelink", new { id = templatelink.id }, templatelink);
         }
 
-        // DELETE: api/Admin/5
+        // DELETE: api/Templatelink/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Admin>> DeleteAdmin(int id)
+        public async Task<ActionResult<Templatelink>> DeleteTemplatelink(int id)
         {
-            var admin = await _context.Admin.FindAsync(id);
-            if (admin == null)
+            var templatelink = await _context.Templatelink.FindAsync(id);
+            if (templatelink == null)
             {
                 return NotFound();
             }
 
-            _context.Admin.Remove(admin);
+            _context.Templatelink.Remove(templatelink);
             await _context.SaveChangesAsync();
 
-            return admin;
+            return templatelink;
         }
 
-        private bool AdminExists(int id)
+        private bool TemplatelinkExists(int id)
         {
-            return _context.Admin.Any(e => e.id == id);
+            return _context.Templatelink.Any(e => e.id == id);
         }
     }
 }

@@ -6,57 +6,53 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TodoApi.Models;
-using System.Web.Http.Cors;
-
 
 namespace TodoApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-
-    public class AdminController : ControllerBase
+    public class ReportController : ControllerBase
     {
         private readonly MyContext _context;
 
-        public AdminController(MyContext context)
+        public ReportController(MyContext context)
         {
             _context = context;
         }
 
-        // GET: api/Admin
-
+        // GET: api/Report
         [HttpGet]
-        public IEnumerable<Admin> Get()
+        public async Task<ActionResult<IEnumerable<Report>>> GetReport()
         {
-            return _context.Admin;
+            return await _context.Report.ToListAsync();
         }
 
-        // GET: api/Admin/5
+        // GET: api/Report/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Admin>> GetAdmin(int id)
+        public async Task<ActionResult<Report>> GetReport(int id)
         {
-            var admin = await _context.Admin.FindAsync(id);
+            var report = await _context.Report.FindAsync(id);
 
-            if (admin == null)
+            if (report == null)
             {
                 return NotFound();
             }
 
-            return admin;
+            return report;
         }
 
-        // PUT: api/Admin/5
+        // PUT: api/Report/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAdmin(int id, Admin admin)
+        public async Task<IActionResult> PutReport(int id, Report report)
         {
-            if (id != admin.id)
+            if (id != report.id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(admin).State = EntityState.Modified;
+            _context.Entry(report).State = EntityState.Modified;
 
             try
             {
@@ -64,7 +60,7 @@ namespace TodoApi.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!AdminExists(id))
+                if (!ReportExists(id))
                 {
                     return NotFound();
                 }
@@ -77,37 +73,37 @@ namespace TodoApi.Controllers
             return NoContent();
         }
 
-        // POST: api/Admin
+        // POST: api/Report
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Admin>> PostAdmin(Admin admin)
+        public async Task<ActionResult<Report>> PostReport(Report report)
         {
-            _context.Admin.Add(admin);
+            _context.Report.Add(report);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAdmin", new { id = admin.id }, admin);
+            return CreatedAtAction("GetReport", new { id = report.id }, report);
         }
 
-        // DELETE: api/Admin/5
+        // DELETE: api/Report/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Admin>> DeleteAdmin(int id)
+        public async Task<ActionResult<Report>> DeleteReport(int id)
         {
-            var admin = await _context.Admin.FindAsync(id);
-            if (admin == null)
+            var report = await _context.Report.FindAsync(id);
+            if (report == null)
             {
                 return NotFound();
             }
 
-            _context.Admin.Remove(admin);
+            _context.Report.Remove(report);
             await _context.SaveChangesAsync();
 
-            return admin;
+            return report;
         }
 
-        private bool AdminExists(int id)
+        private bool ReportExists(int id)
         {
-            return _context.Admin.Any(e => e.id == id);
+            return _context.Report.Any(e => e.id == id);
         }
     }
 }

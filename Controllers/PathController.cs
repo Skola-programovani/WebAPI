@@ -6,57 +6,53 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TodoApi.Models;
-using System.Web.Http.Cors;
-
 
 namespace TodoApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-
-    public class AdminController : ControllerBase
+    public class PathController : ControllerBase
     {
         private readonly MyContext _context;
 
-        public AdminController(MyContext context)
+        public PathController(MyContext context)
         {
             _context = context;
         }
 
-        // GET: api/Admin
-
+        // GET: api/Path
         [HttpGet]
-        public IEnumerable<Admin> Get()
+        public async Task<ActionResult<IEnumerable<Path>>> GetPath()
         {
-            return _context.Admin;
+            return await _context.Path.ToListAsync();
         }
 
-        // GET: api/Admin/5
+        // GET: api/Path/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Admin>> GetAdmin(int id)
+        public async Task<ActionResult<Path>> GetPath(int id)
         {
-            var admin = await _context.Admin.FindAsync(id);
+            var path = await _context.Path.FindAsync(id);
 
-            if (admin == null)
+            if (path == null)
             {
                 return NotFound();
             }
 
-            return admin;
+            return path;
         }
 
-        // PUT: api/Admin/5
+        // PUT: api/Path/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAdmin(int id, Admin admin)
+        public async Task<IActionResult> PutPath(int id, Path path)
         {
-            if (id != admin.id)
+            if (id != path.id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(admin).State = EntityState.Modified;
+            _context.Entry(path).State = EntityState.Modified;
 
             try
             {
@@ -64,7 +60,7 @@ namespace TodoApi.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!AdminExists(id))
+                if (!PathExists(id))
                 {
                     return NotFound();
                 }
@@ -77,37 +73,37 @@ namespace TodoApi.Controllers
             return NoContent();
         }
 
-        // POST: api/Admin
+        // POST: api/Path
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Admin>> PostAdmin(Admin admin)
+        public async Task<ActionResult<Path>> PostPath(Path path)
         {
-            _context.Admin.Add(admin);
+            _context.Path.Add(path);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAdmin", new { id = admin.id }, admin);
+            return CreatedAtAction("GetPath", new { id = path.id }, path);
         }
 
-        // DELETE: api/Admin/5
+        // DELETE: api/Path/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Admin>> DeleteAdmin(int id)
+        public async Task<ActionResult<Path>> DeletePath(int id)
         {
-            var admin = await _context.Admin.FindAsync(id);
-            if (admin == null)
+            var path = await _context.Path.FindAsync(id);
+            if (path == null)
             {
                 return NotFound();
             }
 
-            _context.Admin.Remove(admin);
+            _context.Path.Remove(path);
             await _context.SaveChangesAsync();
 
-            return admin;
+            return path;
         }
 
-        private bool AdminExists(int id)
+        private bool PathExists(int id)
         {
-            return _context.Admin.Any(e => e.id == id);
+            return _context.Path.Any(e => e.id == id);
         }
     }
 }

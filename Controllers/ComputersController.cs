@@ -6,57 +6,53 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TodoApi.Models;
-using System.Web.Http.Cors;
-
 
 namespace TodoApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-
-    public class AdminController : ControllerBase
+    public class ComputersController : ControllerBase
     {
         private readonly MyContext _context;
 
-        public AdminController(MyContext context)
+        public ComputersController(MyContext context)
         {
             _context = context;
         }
 
-        // GET: api/Admin
-
+        // GET: api/Computers
         [HttpGet]
-        public IEnumerable<Admin> Get()
+        public async Task<ActionResult<IEnumerable<Klient>>> GetKlient()
         {
-            return _context.Admin;
+            return await _context.Klient.ToListAsync();
         }
 
-        // GET: api/Admin/5
+        // GET: api/Computers/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Admin>> GetAdmin(int id)
+        public async Task<ActionResult<Klient>> GetKlient(int id)
         {
-            var admin = await _context.Admin.FindAsync(id);
+            var klient = await _context.Klient.FindAsync(id);
 
-            if (admin == null)
+            if (klient == null)
             {
                 return NotFound();
             }
 
-            return admin;
+            return klient;
         }
 
-        // PUT: api/Admin/5
+        // PUT: api/Computers/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAdmin(int id, Admin admin)
+        public async Task<IActionResult> PutKlient(int id, Klient klient)
         {
-            if (id != admin.id)
+            if (id != klient.id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(admin).State = EntityState.Modified;
+            _context.Entry(klient).State = EntityState.Modified;
 
             try
             {
@@ -64,7 +60,7 @@ namespace TodoApi.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!AdminExists(id))
+                if (!KlientExists(id))
                 {
                     return NotFound();
                 }
@@ -77,37 +73,37 @@ namespace TodoApi.Controllers
             return NoContent();
         }
 
-        // POST: api/Admin
+        // POST: api/Computers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Admin>> PostAdmin(Admin admin)
+        public async Task<ActionResult<Klient>> PostKlient(Klient klient)
         {
-            _context.Admin.Add(admin);
+            _context.Klient.Add(klient);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAdmin", new { id = admin.id }, admin);
+            return CreatedAtAction("GetKlient", new { id = klient.id }, klient);
         }
 
-        // DELETE: api/Admin/5
+        // DELETE: api/Computers/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Admin>> DeleteAdmin(int id)
+        public async Task<ActionResult<Klient>> DeleteKlient(int id)
         {
-            var admin = await _context.Admin.FindAsync(id);
-            if (admin == null)
+            var klient = await _context.Klient.FindAsync(id);
+            if (klient == null)
             {
                 return NotFound();
             }
 
-            _context.Admin.Remove(admin);
+            _context.Klient.Remove(klient);
             await _context.SaveChangesAsync();
 
-            return admin;
+            return klient;
         }
 
-        private bool AdminExists(int id)
+        private bool KlientExists(int id)
         {
-            return _context.Admin.Any(e => e.id == id);
+            return _context.Klient.Any(e => e.id == id);
         }
     }
 }

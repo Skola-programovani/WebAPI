@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using TodoApi.Models;
 namespace TodoApi.Models
 {
     public class MyContext : DbContext
@@ -9,5 +10,15 @@ namespace TodoApi.Models
     }
     
         public DbSet<Admin> Admin { get; set; }
+    
+        public DbSet<TodoApi.Models.Klient> Klient { get; set; }
+    
+        public DbSet<TodoApi.Models.Path> Path { get; set; }
+    
+        public DbSet<TodoApi.Models.Report> Report { get; set; }
+    
+        public DbSet<TodoApi.Models.Template> Template { get; set; }
+    
+        public DbSet<TodoApi.Models.Templatelink> Templatelink { get; set; }
     }
 }
