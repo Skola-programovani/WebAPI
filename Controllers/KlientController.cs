@@ -11,23 +11,23 @@ namespace TodoApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ComputersController : ControllerBase
+    public class KlientController : ControllerBase
     {
         private readonly MyContext _context;
 
-        public ComputersController(MyContext context)
+        public KlientController(MyContext context)
         {
             _context = context;
         }
 
-        // GET: api/Computers
+        // GET: api/Klient
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Klient>>> GetKlient()
         {
             return await _context.Klient.ToListAsync();
         }
 
-        // GET: api/Computers/5
+        // GET: api/Klient/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Klient>> GetKlient(int id)
         {
@@ -41,7 +41,7 @@ namespace TodoApi.Controllers
             return klient;
         }
 
-        // PUT: api/Computers/5
+        // PUT: api/Klient/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
@@ -73,7 +73,7 @@ namespace TodoApi.Controllers
             return NoContent();
         }
 
-        // POST: api/Computers
+        // POST: api/Klient
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
@@ -85,7 +85,7 @@ namespace TodoApi.Controllers
             return CreatedAtAction("GetKlient", new { id = klient.id }, klient);
         }
 
-        // DELETE: api/Computers/5
+        // DELETE: api/Klient/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Klient>> DeleteKlient(int id)
         {
