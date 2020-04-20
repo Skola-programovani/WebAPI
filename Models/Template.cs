@@ -9,7 +9,6 @@ namespace TodoApi.Models
         public int maxFull {get; set;}
         public int maxSegments {get; set;}
         public string repetition {get; set;}
-        public string savedFiles {get; set;}
         public string format {get; set;}
     }
 }
