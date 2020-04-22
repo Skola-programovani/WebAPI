@@ -4,7 +4,7 @@ namespace TodoApi.Models
     {
         public int id {get; set;}
         public string name { get; set; }
-        public string confirmed {get; set;}
+        public bool confirmed {get; set;}
         public string MAC {get; set;}
         public string IP {get; set;}
         public string Description {get; set;}
