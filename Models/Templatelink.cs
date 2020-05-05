@@ -1,6 +1,6 @@
 namespace TodoApi.Models
 {
-    public class Templatelink  
+    public class TemplateLink  
     {
         public int id {get; set;}
         public int idKlient { get; set; }

@@ -29,14 +29,29 @@ namespace TodoApi.Controllers
 
         // GET: api/Klient/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Klient>> GetKlient(int id)
+        public async Task<ActionResult<Klient>> GetKlient(string id)
         {
             var klient = await _context.Klient.FindAsync(id);
+
+            if (klient == null)
+
+            {
+                return NotFound();
+            }
+            return klient;
+        }
+
+         // GET: api/Klient/mac/acAddr
+        [HttpGet("mac/{MacAddr}")]
+        public async Task<ActionResult<Klient>> GetKlientMac(string MacAddr)
+        {
+            var klient = _context.Klient.Where(x => x.MAC == MacAddr).FirstOrDefault();
 
             if (klient == null)
             {
                 return NotFound();
             }
+
 
             return klient;
         }

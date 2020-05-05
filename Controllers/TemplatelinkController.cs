@@ -22,16 +22,16 @@ namespace TodoApi.Controllers
 
         // GET: api/Templatelink
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Templatelink>>> GetTemplatelink()
+        public async Task<ActionResult<IEnumerable<TemplateLink>>> GetTemplatelink()
         {
-            return await _context.Templatelink.ToListAsync();
+            return await _context.TemplateLink.ToListAsync();
         }
 
         // GET: api/Templatelink/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Templatelink>> GetTemplatelink(int id)
+        public async Task<ActionResult<TemplateLink>> GetTemplatelink(int id)
         {
-            var templatelink = await _context.Templatelink.FindAsync(id);
+            var templatelink = await _context.TemplateLink.FindAsync(id);
 
             if (templatelink == null)
             {
@@ -40,12 +40,24 @@ namespace TodoApi.Controllers
 
             return templatelink;
         }
+         // GET: api/Templatelink/user/5
+        [HttpGet("user/{UserId}")]
+        public async Task<ActionResult<TemplateLink>> GetTemplateID(int UserId)
+        {
+            var templateId = _context.TemplateLink.Where(x => x.idKlient == UserId).FirstOrDefault();
+
+            if (templateId == null)
+            {
+                return NotFound();
+            }
+            return templateId;
+        }
 
         // PUT: api/Templatelink/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTemplatelink(int id, Templatelink templatelink)
+        public async Task<IActionResult> PutTemplatelink(int id, TemplateLink templatelink)
         {
             if (id != templatelink.id)
             {
@@ -77,9 +89,9 @@ namespace TodoApi.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Templatelink>> PostTemplatelink(Templatelink templatelink)
+        public async Task<ActionResult<TemplateLink>> PostTemplatelink(TemplateLink templatelink)
         {
-            _context.Templatelink.Add(templatelink);
+            _context.TemplateLink.Add(templatelink);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetTemplatelink", new { id = templatelink.id }, templatelink);
@@ -87,15 +99,15 @@ namespace TodoApi.Controllers
 
         // DELETE: api/Templatelink/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Templatelink>> DeleteTemplatelink(int id)
+        public async Task<ActionResult<TemplateLink>> DeleteTemplatelink(int id)
         {
-            var templatelink = await _context.Templatelink.FindAsync(id);
+            var templatelink = await _context.TemplateLink.FindAsync(id);
             if (templatelink == null)
             {
                 return NotFound();
             }
 
-            _context.Templatelink.Remove(templatelink);
+            _context.TemplateLink.Remove(templatelink);
             await _context.SaveChangesAsync();
 
             return templatelink;
@@ -103,7 +115,7 @@ namespace TodoApi.Controllers
 
         private bool TemplatelinkExists(int id)
         {
-            return _context.Templatelink.Any(e => e.id == id);
+            return _context.TemplateLink.Any(e => e.id == id);
         }
     }
 }

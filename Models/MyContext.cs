@@ -6,7 +6,7 @@ namespace TodoApi.Models
     {
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseMySql("Server=70.37.108.236;database=prg_dbbackup;uid=TestUser;pwd=123456;");
+        optionsBuilder.UseMySql("Server=40.68.130.54;database=prgbackup;uid=dbAdmin;pwd=Pepa123456!;");
     }
     
         public DbSet<Admin> Admin { get; set; }
@@ -19,6 +19,6 @@ namespace TodoApi.Models
     
         public DbSet<TodoApi.Models.Template> Template { get; set; }
     
-        public DbSet<TodoApi.Models.Templatelink> Templatelink { get; set; }
+        public DbSet<TodoApi.Models.TemplateLink> TemplateLink { get; set; }
     }
 }
