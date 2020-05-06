@@ -29,7 +29,7 @@ namespace TodoApi.Controllers
         }
 
         // GET: api/Template/5
-        [HttpGet("{id}")]
+        [HttpGet("{id}"), AllowAnonymous]
         public async Task<ActionResult<Template>> GetTemplate(int id)
         {
             var template = await _context.Template.FindAsync(id);
