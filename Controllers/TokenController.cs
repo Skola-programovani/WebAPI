@@ -6,6 +6,9 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using TodoApi.Models;
+using TodoApi.Help;
+using System.Linq;
 
 namespace JWT.Controllers
 {
@@ -13,18 +16,19 @@ namespace JWT.Controllers
   public class TokenController : Controller
   {
     private IConfiguration _config;
-
-    public TokenController(IConfiguration config)
+    private readonly MyContext _context;
+    public TokenController(IConfiguration config, MyContext context)
     {
+      _context = context;
       _config = config;
     }
 
     [AllowAnonymous]
     [HttpPost]
-    public IActionResult CreateToken([FromBody]LoginModel login)
+    public IActionResult CreateToken([FromBody]Login login)
     {
       IActionResult response = Unauthorized();
-      var user = Authenticate(login);
+      Admin user = Authenticate(login);
 
       if (user != null)
       {
@@ -35,7 +39,7 @@ namespace JWT.Controllers
       return response;
     }
 
-    private string BuildToken(UserModel user)
+    private string BuildToken(Admin user)
     {
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -48,28 +52,12 @@ namespace JWT.Controllers
         return new JwtSecurityTokenHandler().WriteToken(token);
      }
 
-     private UserModel Authenticate(LoginModel login)
+     private Admin Authenticate(Login login)
      {
-        UserModel user = null;
-
-        if (login.Username == "mario" && login.Password == "secret")
-        {
-            user = new UserModel { Name = "Mario Rossi", Email = "mario.rossi@domain.com"};
-        }
-        return user;
+        string pssHash = TokenHelper.getPasswordHash(login.password);
+        return _context.Admin.FirstOrDefault(x => x.username == login.username && x.password == pssHash);
      }
 
-    public class LoginModel
-    {
-      public string Username { get; set; }
-      public string Password { get; set; }
-    }
-
-    private class UserModel
-    {
-      public string Name { get; set; }
-      public string Email { get; set; }
-      public DateTime Birthdate { get; set; }
-    }
+  
   }
 }
