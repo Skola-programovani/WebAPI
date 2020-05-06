@@ -92,7 +92,7 @@ namespace TodoApi.Controllers
         // POST: api/Klient
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPost]
+        [HttpPost, AllowAnonymous]
         public async Task<ActionResult<Klient>> PostKlient(Klient klient)
         {
             _context.Klient.Add(klient);
